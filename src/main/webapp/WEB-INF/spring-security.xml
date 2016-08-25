@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<http auto-config="true">
+		<intercept-url pattern="/home/*" access="ROLE_ADMIN" />
+		<form-login login-processing-url="/login" login-page="/users/sign_in"
+			username-parameter="username" password-parameter="password"
+			default-target-url="/home/welcome" authentication-failure-url="/users/sign_in?auth=fail" />
+		<logout logout-url="/logout" logout-success-url="/users/sign_out" />
+	</http>
+	<authentication-manager>
+		<authentication-provider>
+			<jdbc-user-service data-source-ref="dataSource" 
+				users-by-username-query="SELECT USER_NAME,PASSWORD,
+										 CASE ENABLED WHEN 1 THEN 'true' ELSE 'false' END AS ENABLED 
+										 FROM USER WHERE USER_NAME=?;"
+				authorities-by-username-query="SELECT U.USER_NAME, R.ROLE_NAME 
+        									   FROM USER U, ROLES R, USER_ROLES UR
+        									   WHERE U.ID_USER = UR.ID_USER 
+        									   AND R.ID_ROLE = UR.ID_ROLE        
+       										   AND U.USER_NAME=?;" />
+			<!-- <user-service> -->
+			<!-- <user name="roberto" password="roberto123" authorities="ROLE_ADMIN" 
+				/> -->
+			<!-- </user-service> -->
+		</authentication-provider>
+	</authentication-manager>
+
+
+</beans:beans>
