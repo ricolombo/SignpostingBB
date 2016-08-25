@@ -2,7 +2,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <div id="login">
 	<div>
-		<a href="?lang=en">English</a> | <a href="?lang=es">Spanish</a>
+		<a href="?lang=en">English</a> | <a href="?lang=es">Espa&ntilde;ol</a>
 	</div>
 	<div>
 		<form action="${pageContext.request.contextPath}/login" method="post">
